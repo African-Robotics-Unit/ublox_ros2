@@ -12,7 +12,13 @@ class UbloxPublisher(Node):
         self.publisher_ = self.create_publisher(PosVelCov, 'ublox_gnss', 10)
         timer_period = 0.4  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.ser = serial.Serial('/dev/ttyACM0', 57600)
+
+        self.declare_parameter('serial_device', '/dev/ttyACM0')
+        self.declare_parameter('baud_rate', 57600)
+        self.serial_device = self.get_parameter('serial_device').get_parameter_value().string_value
+        self.baud_rate = self.get_parameter('baud_rate').get_parameter_value().integer_value
+
+        self.ser = serial.Serial(self.serial_device, self.baud_rate)
 
     def timer_callback(self):
         msg = PosVelCov()
@@ -27,6 +33,7 @@ class UbloxPublisher(Node):
                 pass
             if (self.ser.read() != b'\x62'): # start seq 1
                 continue
+            msg.header.stamp = self.get_clock().now().to_msg()
             if (self.ser.read() != b'\x01'):
                 continue
             message_id = self.ser.read()
