@@ -3,10 +3,10 @@
 std_msgs/Header header
 
 uint32 itow
-float32 lon
-float32 lat
-float32 height
-float32 hmsl
+float64 lon
+float64 lat
+float64 height
+float64 hmsl
 float32 h_acc
 float32 v_acc
 float32 vel_n
