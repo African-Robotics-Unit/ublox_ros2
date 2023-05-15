@@ -26,7 +26,7 @@ class UbloxPublisher(Node):
         velocity_read = False
         covariance_read = False
         
-        self.get_logger().info('Entered callback')
+        #self.get_logger().info('Entered callback')
 
         while (not(position_read and velocity_read and covariance_read)):
             while (self.ser.read() != b'\xb5'): #start seq 0
@@ -83,7 +83,7 @@ class UbloxPublisher(Node):
                 covariance_read = True
         
         self.publisher_.publish(msg)
-        self.get_logger().info('Publishing: GNSS')
+        #self.get_logger().info('Publishing: GNSS')
         
 
 def main(args=None):
